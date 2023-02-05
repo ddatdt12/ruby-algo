@@ -32,11 +32,16 @@ def ferry_loading_iii(cars, max_car_cnt, across_time)
     if cars_in_ferry.any?
       location = location == "left" ? "right" : "left"
       t += across_time
-    end
-    # Save car already cross river in answer with time
-    while cars_in_ferry.any?
-      car = cars_in_ferry.shift
-      ans[car[:time]] = t
+      # Save car already cross river in answer with time
+      while cars_in_ferry.any?
+        car = cars_in_ferry.shift
+        ans[car[:time]] = t
+      end
+    elsif (location == "left" and !right_bank.any?) or (location == "right" and !left_bank.any?)
+      t = cars.first()[:time]
+    else
+      location = location == "left" ? "right" : "left"
+      t += across_time
     end
 
     while cars.any? and cars[0][:time] <= t
@@ -49,7 +54,7 @@ def ferry_loading_iii(cars, max_car_cnt, across_time)
     end
   end
 
-  puts "Answer : " + ans.values.join(" ")
+  puts ans.values
 end
 
 testcases = gets.chomp.to_i
